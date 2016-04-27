@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Driver Approval</h2>
+<div id="DriverId" style="visibility:hidden">
+    @ViewBag.Id
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#loaderDiv").hide();
+
+    
+
+        $.ajaxSetup({
+            cache: false
+        });
+
+        var datas =
+       {
+           tag: "get_driver_info",
+           driverId: parseInt( $('#DriverId').text())
+       }
+        var txt = "";
+        var photo = "", nidphoto = "", brtcphoto = "", licphoto = ""
+
+        var nu = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
+        var nidlink = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
+        var brtclink = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
+        var liclink = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
+            
+
+        if (true) 
+        {
+           
+            $.ajax({             
+                type: "POST",
+                url: "http://27.147.141.68:8080/deshexpressbd/api/android_apii.php",
+                data: datas,
+                beforeSend: function () {
+                    $("#loaderDiv").show();
+
+                },
+                success: function (data) {
+
+                    console.log("maaaaaay");
+                    console.log(JSON.stringify(data));
+                  
+                    var myInd = 1;
+                    txt += " <div class='col-lg-3'><strong>Name: </strong></div><div class='col-lg-3'>" + data.fullName + "</div>";
+                    txt += "<div class='col-lg-3'> <strong>Phone: </strong></div><div class='col-lg-3'>" + data.phone + "</div> ";
+                    txt += " <div class='col-lg-3'><strong>Email: </strong></div><div class='col-lg-3'>" + data.email + "</div> ";
+                    txt += "<div class='col-lg-3'> <strong>Age: </strong></div><div class='col-lg-3'>" + data.age + "</div> ";
+                    txt += " <div class='col-lg-3'><strong>Present address: </strong></div><div class='col-lg-3'>" + data.present_address + "</div> ";
+                    txt += " <div class='col-lg-3'><strong>City: </strong></div><div class='col-lg-3'>" + data.city + "</div> ";
+
+                   
+           
+                    txt += "<div class='col-lg-3'><strong>Car Type: </strong></div><div class='col-lg-3'>" + data.car_type + "</div>";
+                    txt += "<div class='col-lg-3'><strong>Car Model: </strong></div><div class='col-lg-3'>" + data.car_model_no + "</div>";
+                    txt += "<div class='col-lg-3'><strong>Manufacture Year: </strong></div><div class='col-lg-3'>" + data.manufacture_year + "</div>";
+                    txt += "<div class='col-lg-3'><strong>Car No: </strong></div><div class='col-lg-3'>" + data.car_no + "</div>";
+                   
+                    var v = "",nid = "",brtc="",lic="";
+                    v = data.picture;
+                    nid = data.nid_image;
+                    brtc = data.brtc_image;
+                    lic = data.license_image;
+
+                    nu = nu + v;
+                    nidlink = nidlink + nid;
+                    brtclink = brtclink + brtc;
+                    liclink = liclink + lic;
+                    
+
+                    photo +="<img src=" + nu + " style='width:200px ; height:200px' >";
+                    console.log(nidlink);
+                    console.log(brtclink);
+                    console.log(liclink);
+
+                    nidphoto +="<img src=" + nidlink + " style='width:200px ; height:200px' >";
+                    brtcphoto += "<img src=" + brtclink+ " style='width:200px ; height:200px' >";
+                    licphoto += "<img src=" + liclink + " style='width:200px ; height:200px' >";
+
+                    if (txt != "") {
+                        $("#table").append(txt).removeClass("hidden");
+                    }
+
+                    if (photo != "") {
+                        $("#photoId").append(photo).removeClass("hidden");
+                    }
+                    
+                    if (nidphoto != "") {
+                        $("#photoNid").append(nidphoto).removeClass("hidden");
+                    }
+                    if (brtcphoto != "") {
+                        $("#photoBrt").append(brtcphoto).removeClass("hidden");
+                    }
+                    if (licphoto != "") {
+                        $("#photoLic").append(licphoto).removeClass("hidden");
+                    }
+
+                    $("#loaderDiv").hide();
+                    //<!--   console.log(JSON.stringify(data)); -->
+                    $("#sm").show();
+                    $("#sm").delay(3200).fadeOut(300);
+
+                    //<!-- location.href = "DriverApproval.html";  -->
+                },
+                dataType: 'json'
+            });
+        }
+    
+
+        var dataDriverConfirm =
+        {
+            tag: "confirm_driver_basic",
+            driverId: parseInt($('#DriverId').text())
+        }
+
+        $('#add').click(function () {
+
+            var r = confirm("Are you sure!");
+
+            if (r == true) {
+
+                console.log("Trial");
+                var isValidItem = true;
+
+                if (true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "http://27.147.141.68:8080/deshexpressbd/api/android_apii.php",
+                        data: dataDriverConfirm,
+                        beforeSend: function () {
+                            $("#loaderDiv").show();
+
+                        },
+                        success: function (data) {
+
+                            console.log(JSON.stringify(data));
+
+
+                            $("#loaderDiv").hide();
+                            //<!--   console.log(JSON.stringify(data)); -->
+                            $("#sm").show();
+                            $("#sm").delay(3200).fadeOut(300);
+
+                            //location.href = "DriverApproval.html";  
+                            var url = '@Url.Action("Index", "Driver")';
+
+                            window.location.href = url;
+                        },
+                        dataType: 'json'
+                    });
+
+                }
+            }
+            else
+            {
+                
+            }
+        }
+
+    );
+       
+        $('#back').click(function()
+        {
+          var url=  '@Url.Action("Index", "Driver")';
+                       
+            window.location.href = url;
+       
+        })
+    })
+   
+</script>
+
+
+
+<div id="loaderDiv">
+    <img src="~/Content/Img/spinner.gif" width="70" />
+</div>
+
+<div id="Approval" class="col-lg-12 " style="padding-left:25px">
+    <input type="button" id="add" class="btn btn-success"  value="Approve" style="width:80px"/>
+    <input type="button" id="back" class="btn btn-warning" value="Back" style="width:80px" />
+</div>
+<div class="clearfix">
+
+</div>
+<hr />
+<div id="table" class="hidden col-lg-12 tblName">
+</div>
+<div class="clearfix">
+  
+</div>
+<hr />
+<div class="col-lg-12" >
+   
+    <div id="photoId" class="col-lg-3" >
+        <span class="titlePic">Photo</span>
+    </div>
+
+
+    <div id="photoNid" class="col-lg-3 " >
+        <span class="titlePic">NID</span>
+    </div>
+
+    <div id="photoBrt" class="col-lg-3" >
+        <span class="titlePic">BRTC Document</span>
+    </div>
+
+    <div id="photoLic" class="col-lg-3 ">
+        <span class="titlePic">Driving License</span>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+
+
+
+
+
+
+

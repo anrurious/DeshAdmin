@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Driver List</h2>
+<script>
+    $(document).ready(function () {
+
+        $("#loaderDiv").hide();
+
+        var PHONES = new Array("Sony", "Samsung", "HTC", "Motorolla");
+
+        $.ajaxSetup({
+            cache: false
+        });
+
+        var datas =
+       {
+           tag: "ditclget",
+           fullName: "shamol"
+       }
+        var txt = "";
+
+        if (true) {
+            $.ajax({
+                type: "POST",
+                url: "http://27.147.141.68/deshexpressbd/api/android_apii.php",
+                data: datas,
+                beforeSend: function () {
+                    $("#loaderDiv").show();
+                },
+                success: function (data) {
+                    console.log("ankur");
+
+                    $.each(data.vals, function (index)
+                    {
+                        console.log(index);
+                        console.log(data.vals[index].name);                      
+                        //var x = data.vals[index].id;
+                        var myInd = index + 1;
+                        txt += "<tr><td>" + myInd + "</td><td>" + data.vals[index].id + "</td><td>" + data.vals[index].name + "</td><td>" + data.vals[index].phone + "</td><td>" + data.vals[index].city + "</td><td>" + data.vals[index].car_model_no + "</td><td><a href='/Driver/Edit/" + data.vals[index].id + "'>view</a></td></tr>";
+                    }
+
+                    )
+                    if (txt != "") {
+                        $("#table").append(txt).removeClass("hidden");
+                    }
+
+
+                    $("#loaderDiv").hide();
+                    //<!--   console.log(JSON.stringify(data)); -->
+                    $("#sm").show();
+                    $("#sm").delay(3200).fadeOut(300);
+
+                    //location.href = "DriverApproval.html";
+                },
+
+                error: function (jqXHR, exception) {
+
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+
+                    $('#msgv').html(msg);
+                }
+                ,
+                dataType: 'json'
+            });
+        }
+    });
+</script>
+
+
+<div id="msgv">
+    <br />
+   
+</div>
+<div id="loaderDiv">
+
+    <!-- <img src="http://27.147.141.68/"/> -->
+    @*<img src="spinner.gif" width="70px" />*@
+    <img src="~/Content/Img/spinner.gif" width="70" />
+</div>
+
+
+@*<table id="table" class="hidden">*@
+
+    @*<div width='200px' align='center'>*@
+        <table id="table" class='table table-responsive table-hover'>
+
+            <tr>
+                <th>Sl</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>City</th>
+                <th>Car</th>
+                <th></th>
+                
+            </tr>
+            
+        </table>
+
+
+
+
