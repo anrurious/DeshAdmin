@@ -26,12 +26,13 @@
            driverId: parseInt( $('#DriverId').text())
        }
         var txt = "";
-        var photo = "", nidphoto = "", brtcphoto = "", licphoto = ""
+        var photo = "", nidphoto = "", brtcphoto = "", licphoto = "";
+        var photol = "", nidphotol = "", brtcphotol = "", licphotol = ""
 
-        var nu = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
-        var nidlink = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
-        var brtclink = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
-        var liclink = "http://27.147.141.68:8080/deshexpressbd/images/driver/";
+        var nu = "http://27.147.141.68/deshexpressbd/images/driver/";
+        var nidlink = "http://27.147.141.68/deshexpressbd/images/driver/";
+        var brtclink = "http://27.147.141.68/deshexpressbd/images/driver/";
+        var liclink = "http://27.147.141.68/deshexpressbd/images/driver/";
             
 
         if (true) 
@@ -39,7 +40,7 @@
            
             $.ajax({             
                 type: "POST",
-                url: "http://27.147.141.68:8080/deshexpressbd/api/android_apii.php",
+                url: "http://27.147.141.68/deshexpressbd/api/android_apii.php",
                 data: datas,
                 beforeSend: function () {
                     $("#loaderDiv").show();
@@ -86,6 +87,10 @@
                     brtcphoto += "<img src=" + brtclink+ " style='width:200px ; height:200px' >";
                     licphoto += "<img src=" + liclink + " style='width:200px ; height:200px' >";
 
+                    nidphotol += "<img src=" + nidlink + " style='width:500px ; height:500px' >";
+                    brtcphotol += "<img src=" + brtclink + " style='width:500px ; height:500px' >";
+                    licphotol += "<img src=" + liclink + " style='width:500px ; height:500px' >";
+
                     if (txt != "") {
                         $("#table").append(txt).removeClass("hidden");
                     }
@@ -97,6 +102,13 @@
                     if (nidphoto != "") {
                         $("#photoNid").append(nidphoto).removeClass("hidden");
                     }
+
+                    if (nidphotol != "") {
+                        $("#largepic").append(nidphotol).removeClass("hidden");
+                    }
+
+                    $("#largepic").hide();
+
                     if (brtcphoto != "") {
                         $("#photoBrt").append(brtcphoto).removeClass("hidden");
                     }
@@ -109,7 +121,6 @@
                     $("#sm").show();
                     $("#sm").delay(3200).fadeOut(300);
 
-                    //<!-- location.href = "DriverApproval.html";  -->
                 },
                 dataType: 'json'
             });
@@ -121,6 +132,10 @@
             tag: "confirm_driver_basic",
             driverId: parseInt($('#DriverId').text())
         }
+
+        $('#photoNid').click(function () {
+            $("#largepic").show();
+        })
 
         $('#add').click(function () {
 
@@ -134,7 +149,7 @@
                 if (true) {
                     $.ajax({
                         type: "POST",
-                        url: "http://27.147.141.68:8080/deshexpressbd/api/android_apii.php",
+                        url: "http://27.147.141.68/deshexpressbd/api/android_apii.php",
                         data: dataDriverConfirm,
                         beforeSend: function () {
                             $("#loaderDiv").show();
@@ -205,7 +220,6 @@
         <span class="titlePic">Photo</span>
     </div>
 
-
     <div id="photoNid" class="col-lg-3 " >
         <span class="titlePic">NID</span>
     </div>
@@ -219,7 +233,11 @@
     </div>
 
 </div>
+<div id="largepic" class="col-lg-12">
+
+</div>
 <div class="clearfix"></div>
+
 
 
 
